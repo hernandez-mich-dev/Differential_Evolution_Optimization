@@ -1,0 +1,5 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/michaelhernandez/Documents/CS5100/Capstone/DE/main'
+relocations:     []
+...
