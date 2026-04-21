@@ -2,7 +2,7 @@
 
 namespace a_de {
 
-    Results differentialEvolution_jDE(
+    Results differentialEvolution(
         CostFunction call,
         int d,
         int np,
@@ -16,6 +16,12 @@ namespace a_de {
         }
         if (d <= 0) {
             throw std::invalid_argument("d must be positive");
+        }
+        if (iteration_max < 0) {
+            throw std::invalid_argument("iteration_max must be nonnegative");
+        }
+        if (lower > upper) {
+            throw std::invalid_argument("lower must be <= upper");
         }
 
         std::vector<double> best_vector(d, 0.0);
@@ -104,8 +110,6 @@ namespace a_de {
                     {
                         trial_vector[j] = x1[i][j];
                     }
-
-                    trial_vector[j] = std::clamp(trial_vector[j], lower, upper);
                 }
 
                 double score = call(trial_vector);

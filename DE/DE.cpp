@@ -34,7 +34,6 @@ namespace de {
 
         best_vector.assign(d, 0.0);
 
-        // Initialize population and evaluate
         for (int i = 0; i < np; ++i) {
             for (int j = 0; j < d; ++j) {
                 x1[i][j] = dist_param(gen);
@@ -49,7 +48,6 @@ namespace de {
             }
         }
 
-        // Early stop if VTR is reached during initialization
         if (best_cost <= vtr) {
             return Results(best_vector, best_cost, nfe);
         }
@@ -62,12 +60,10 @@ namespace de {
                 do { b = dist_NP(gen); } while (b == i || b == a);
                 do { c = dist_NP(gen); } while (c == i || c == a || c == b);
 
-                // Mutation
                 for (int j = 0; j < d; ++j) {
                     mutant[j] = x1[a][j] + f * (x1[b][j] - x1[c][j]);
                 }
 
-                // Crossover
                 int j_rand = dist_D(gen);
 
                 for (int j = 0; j < d; ++j) {
@@ -76,15 +72,11 @@ namespace de {
                     } else {
                         trial[j] = x1[i][j];
                     }
-
-                    trial[j] = std::clamp(trial[j], lower, upper);
                 }
 
-                // Evaluate trial
                 double score = call(trial);
                 nfe++;
 
-                // Selection
                 if (score <= cost[i]) {
                     x2[i] = trial;
                     cost[i] = score;
@@ -92,8 +84,7 @@ namespace de {
                     if (score < best_cost) {
                         best_cost = score;
                         best_vector = trial;
-
-                        // Early stop when VTR is first reached
+                    
                         if (best_cost <= vtr) {
                             return Results(best_vector, best_cost, nfe);
                         }

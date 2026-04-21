@@ -42,21 +42,27 @@ double tb1::dejong_f2 (const std::vector<double>& x)
 // VTR = 1.e-6
 double tb1::dejong_f3(const std::vector<double>& x)
 {
-    double result = 30.0;
+    double sum = 30.0;
 
-    for (size_t i = 0; i < x.size(); ++i)
+    for (double xi : x)
     {
-        if (x[i] >= -5.12 && x[i] <= 5.12)
+        if (xi < -5.12 || xi > 5.12)
         {
-            result += std::floor(x[i]);
+            double penalty_product = 1.0;
+            for (double xj : x)
+            {
+                if (xj < -5.12 || xj > 5.12)
+                {
+                    penalty_product *= tb1::sgn(xj - 5.12);
+                }
+            }
+            return 30.0 * penalty_product;
         }
-        else
-        {
-            result *= 30.0 * tb1::sgn(x[i] - 5.12);
-        }
+
+        sum += std::floor(xi);
     }
 
-    return result;
+    return sum;
 }
 
 //De Jong function F4 (quartic)
@@ -163,29 +169,21 @@ double tb1::griewangk(const std::vector<double>& x)
 // VTR = 1.e-6
 double tb1::zimmermann_f8(const std::vector<double>& x)
 {
-    auto sgn = [](double v) -> double {
-        if (v > 0.0) return  1.0;
-        if (v < 0.0) return -1.0;
-        return 0.0;
-    };
-
     auto p = [](double delta) -> double {
         return 100.0 * (1.0 + delta);
     };
 
     double h1 = 9.0 - x[0] - x[1];
-
     double h2 = (x[0] - 3.0) * (x[0] - 3.0)
               + (x[1] - 2.0) * (x[1] - 2.0) - 16.0;
-
     double h3 = x[0] * x[1] - 14.0;
 
     return std::max({
         h1,
-        p(h2) * sgn(h2),
-        p(h3) * sgn(h3),
-        p(x[0]) * sgn(-x[0]),
-        p(x[1]) * sgn(-x[1])
+        p(h2) * tb1::sgn(h2),
+        p(h3) * tb1::sgn(h3),
+        p(x[0]) * tb1::sgn(x[0]),
+        p(x[1]) * tb1::sgn(x[1])
     });
 }
 
@@ -231,27 +229,27 @@ double tb1::sgn(double v)
 // N: number of sample points (60 for T8, 100 for T16)
 double tb1::polynomial_f9(const std::vector<double>& x, int k, int N)
 {
-    int    degree = 2 * k;
-    double alpha  = tb1::chebyshev(degree, 1.2);
+    int degree = 2 * k;
+    double alpha = tb1::chebyshev(degree, 1.2);
     double result = 0.0;
 
-    for (int n = 0; n <= N; n++)
+    for (int n = 0; n <= N; ++n)
     {
-        double z    = -1.0 + (2.0 * n) / N;
-        double h    = tb1::h4(x, z);
+        double z = -1.0 + (2.0 * n) / static_cast<double>(N);
+        double h = tb1::h4(x, z);
 
-        double over  = h - 1.0;
-        result += tb1::sgn(over)  * (over  * over);
+        double term1 = 1.0 + h;
+        result += tb1::sgn(-term1) * (term1 * term1);
 
-        double under = -1.0 - h;
-        result += tb1::sgn(under) * (under * under);
+        double term2 = 1.0 - h;
+        result += tb1::sgn(-term2) * (term2 * term2);
     }
 
-    double at_pos = alpha - tb1::h4(x,  1.2);
-    double at_neg = alpha - tb1::h4(x, -1.2);
+    double term3 = alpha - tb1::h4(x,  1.2);
+    result += tb1::sgn(-term3) * (term3 * term3);
 
-    result += tb1::sgn(at_pos) * (at_pos * at_pos);
-    result += tb1::sgn(at_neg) * (at_neg * at_neg);
+    double term4 = alpha - tb1::h4(x, -1.2);
+    result += tb1::sgn(-term4) * (term4 * term4);
 
     return result;
 }

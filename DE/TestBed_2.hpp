@@ -33,6 +33,8 @@ namespace tb2
     //VTR set to 1.e^{-3}
     double ackley(const std::vector<double>& x);
 
+    double rastrigin(const std::vector<double>& x);
+
 }
 
 #endif
