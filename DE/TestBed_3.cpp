@@ -15,11 +15,17 @@ double tb3::goldstein(const std::vector<double>& x)
 double tb3::u(double z, double a, double k, double m)
 {
     if (z > a)
+    {
         return k * std::pow(z - a, m);
+    }
     else if (z < -a)
+    {
         return k * std::pow(-z - a, m);
+    }
     else
+    {
         return 0.0;
+    }
 }
 
 // Penalized Shubert Function
@@ -29,7 +35,10 @@ double tb3::shubert(double x)
 {
     double result = 0.0;
     for (int i = 1; i <= 5; i++)
+    {
         result += i * std::cos((i + 1) * x + i);
+    }
+
     return result;
 }
 
@@ -108,7 +117,9 @@ double tb3::f21(const std::vector<double>& x)
 {
     double penalty = 0.0;
     for (size_t i = 0; i < x.size(); i++)
+    { 
         penalty += tb3::u(x[i], 10.0, 100.0, 4.0);
+    }
 
     return tb3::g2(x) + penalty;
 }
@@ -139,14 +150,16 @@ double tb3::f22(const std::vector<double>& x)
 {
     double penalty = 0.0;
     for (size_t i = 0; i < x.size(); i++)
+    {
         penalty += tb3::u(x[i], 10.0, 100.0, 4.0);
+    }
 
     return tb3::g3(x) + penalty;
 }
 
 double tb3::g4(const std::vector<double>& x)
 {
-    const double PI = 3.14159265358979323846;
+    const double PI = 3.14159;
 
     double s1 = std::sin(3.0 * PI * x[0]);
     double sum = s1 * s1;
@@ -171,7 +184,9 @@ double tb3::f23(const std::vector<double>& x)
 {
     double penalty = 0.0;
     for (size_t i = 0; i < x.size(); i++)
+    {
         penalty += tb3::u(x[i], 10.0, 100.0, 4.0);
+    }
 
     return tb3::g4(x) + penalty;
 }
@@ -181,7 +196,9 @@ double tb3::f24(const std::vector<double>& x)
 {
     double penalty = 0.0;
     for (size_t i = 0; i < x.size(); i++)
+    {
         penalty += tb3::u(x[i], 5.0, 100.0, 4.0);
+    }
 
     return tb3::g4(x) + penalty;
 }
@@ -239,7 +256,9 @@ double tb3::f29(const std::vector<double>& x)
 {
     double sum = 0.0;
     for (size_t i = 0; i < x.size(); i++)
+    {
         sum += (i + 1.0) * (x[i] * x[i]);
+    }
 
     return std::pow(sum, 0.25);
 }

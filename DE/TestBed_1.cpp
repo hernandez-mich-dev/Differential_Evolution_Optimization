@@ -7,6 +7,7 @@
 double tb1::dejong_f1 (const std::vector<double>& x)
 {
     double result = 0.0;
+
     for (size_t i = 0; i < x.size(); i++)
     {
         result += std::pow(x[i], 2); 
@@ -24,6 +25,7 @@ double tb1::dejong_f2 (const std::vector<double>& x)
     double temp_1 = 0.0;
     double temp_2 = 0.0;
     double result = 0.0;
+
     for (size_t i = 0; i + 1 < x.size(); ++i)
     {
         temp_1 = (x[i] * x[i]) - x[i + 1];
@@ -75,11 +77,13 @@ double tb1::dejong_f4(const std::vector<double>& x)
     static std::uniform_real_distribution<double> uniform(0.0, 1.0);
 
     double result = 0.0;
+    
     for (size_t j = 0; j < x.size(); ++j)
     {
         double η = uniform(rng);                  
         result += (j + 1) * (x[j] * x[j] * x[j] * x[j]) + η;
     }
+
     return result;
 }
 
@@ -189,8 +193,14 @@ double tb1::zimmermann_f8(const std::vector<double>& x)
 
 double tb1::chebyshev(int n, double z)
 {
-    if (n == 0) return 1.0;
-    if (n == 1) return z;
+    if (n == 0) 
+    {
+        return 1.0;
+    }
+    if (n == 1) 
+    {
+        return z;
+    }
 
     double t_prev = 1.0;
     double t_curr = z;
@@ -209,18 +219,28 @@ double tb1::h4(const std::vector<double>& x, double z)
 {
     double result = 0.0;
     double z_pow  = 1.0;
+    
     for (size_t j = 0; j < x.size(); j++)
     {
         result += x[j] * z_pow;
         z_pow  *= z;
     }
+
     return result;
 }
 
 double tb1::sgn(double v)
 {
-    if (v > 0.0) return  1.0;
-    if (v < 0.0) return -1.0;
+    if (v > 0.0) 
+    {
+        return  1.0;
+    }
+    
+    if (v < 0.0) 
+    {
+        return -1.0;
+    }
+
     return 0.0;
 }
 
