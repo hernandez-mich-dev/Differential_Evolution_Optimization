@@ -1635,38 +1635,6 @@ void run_original_de(std::map<std::string, Results>& f_to_res,
                   << ", nfe: " << value.nfe << "\n";
     }
 
-    test_name = "michalewicz_m10";
-    int mic_10 = 0;
-    d = 2;
-    np = 30;
-    iteration_max = 10000;
-    f = 0.5;
-    cr = 0.1;
-    lower = 0.0;
-    upper = 3.14159265358979323846;
-    vtr = -1.8012;
-    Results r_mic_10{};
-
-    for (int i = 0; i < testbed_trial_num; i++)
-    {
-        r_mic_10 = de::differentialEvolution(
-            tbm::michalewicz_m10,
-            d,
-            np,
-            iteration_max,
-            f,
-            cr,
-            lower,
-            upper,
-            vtr
-        );
-        mic_10 += r_mic_10.nfe;
-    }
-
-    r_mic_10.test_name = test_name;
-    r_mic_10.nfe = mic_10 / testbed_trial_num;
-    testbed_modern.emplace(test_name, r_mic_10);
-
     test_name = "michalewicz_m5";
     int mic_5 = 0;
     d = 2;
@@ -3122,33 +3090,6 @@ void run_adaptive_de(std::map<std::string, Results>& f_to_res,
     }
 
     ////////////////////////////// MODERN TESTBED BEGINS //////////////////////////////
-   test_name = "michalewicz_m10";
-    int mic_10 = 0;
-    d = 2;
-    np = 30;
-    iteration_max = 10000;
-    lower = 0.0;
-    upper = 3.14159265358979323846;
-    vtr = -1.8012;
-    Results r_mic_10{};
-
-    for (int i = 0; i < testbed_trial_num; i++)
-    {
-        r_mic_10 = a_de::differentialEvolution(
-            tbm::michalewicz_m10,
-            d,
-            np,
-            iteration_max,
-            lower,
-            upper,
-            vtr
-        );
-        mic_10 += r_mic_10.nfe;
-    }
-
-    r_mic_10.test_name = test_name;
-    r_mic_10.nfe = mic_10 / testbed_trial_num;
-    testbed_modern.emplace(test_name, r_mic_10);
 
     test_name = "michalewicz_m5";
     int mic_5 = 0;
