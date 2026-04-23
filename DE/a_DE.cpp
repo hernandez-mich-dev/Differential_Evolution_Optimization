@@ -11,16 +11,23 @@ namespace a_de {
         double upper,
         double vtr)
     {
-        if (np < 4) {
+        if (np < 4) 
+        {
             throw std::invalid_argument("np must be at least 4");
         }
-        if (d <= 0) {
+
+        if (d <= 0) 
+        {
             throw std::invalid_argument("d must be positive");
         }
-        if (iteration_max < 0) {
+
+        if (iteration_max < 0) 
+        {
             throw std::invalid_argument("iteration_max must be nonnegative");
         }
-        if (lower > upper) {
+        
+        if (lower > upper) 
+        {
             throw std::invalid_argument("lower must be <= upper");
         }
 
